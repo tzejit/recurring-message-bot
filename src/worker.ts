@@ -93,7 +93,8 @@ function getParsedArgs(argsRaw: string[]) {
     return errorMessage.length != 0 ? errorMessage.join('\n\n') : details
 }
 
-function checkRecurringConditions(time: Date, argsDict: {[index: string]: number[]}) {
+function checkRecurringConditions(time: Date, argsDict: {[index: string]: number[]}, offset: number) {
+    time.setHours(time.getHours() + offset);
     if ("day" in argsDict && !argsDict.day.includes(time.getDay())) {
         return false
     }
@@ -362,7 +363,7 @@ export default {
     delete userCronSchedule._id;
     for (let [k, jobArr] of Object.entries(userCronSchedule)) {
       for (const v of jobArr) {
-        if (checkRecurringConditions(date, v)) {
+        if (checkRecurringConditions(new Date(event.scheduledTime), v, Number(v['tz']))) {
             const url = `https://api.telegram.org/bot${env.API_KEY}/sendMessage?chat_id=${k}&text=${encodeURIComponent(v.message)}`
             await fetch(url).then(resp => resp.json()); 
           }
