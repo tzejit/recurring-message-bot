@@ -98,15 +98,8 @@ export default {
         let message = "Invalid command" //JSON.stringify(payload)
         try {
           if ('entities' in payload.message) {
-
-            var dataHeaders = new Headers();
-            dataHeaders.append("api-key", env.DATA_KEY);
-            dataHeaders.append("Content-Type", "application/ejson");
-
-
             const command = payload.message.text.split(" ")[0]
             const argsRaw = payload.message.text.split(" ").slice(1)
-
             switch (command) {
               case "/help":
                 {
@@ -268,9 +261,6 @@ export default {
     const date = new Date(event.scheduledTime);
     const [hh, mm] = getTimeString(date.getHours(), date.getMinutes())
     const key = hh + mm
-    var dataHeaders = new Headers();
-    dataHeaders.append("api-key", env.DATA_KEY);
-    dataHeaders.append("Content-Type", "application/ejson");
     let client = getDbClient(env.MONGODB_URI)
     let userCronTriggerResponse = await client.collection("cronTrigger").findOne({ "_id": key });
     let userCronSchedule: { [index: string]: { [index: string]: number[] | string } } = userCronTriggerResponse;
