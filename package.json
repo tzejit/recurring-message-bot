@@ -16,6 +16,9 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
     "typescript": "^5.4.2",
-    "wrangler": "^3.0.0"
+    "wrangler": "^4.41.0"
+  },
+  "dependencies": {
+    "mongodb": "^6.20.0"
   }
 }
